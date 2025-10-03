@@ -123,7 +123,7 @@ export default function EditMovieForm({ movieId, initialData }: EditMovieFormPro
           {/* Image URL */}
           <div className="mb-6">
             <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-300 mb-2">
-              Poster URL
+              Poster URL (valgfritt)
             </label>
             <div className="relative">
               <Upload className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />

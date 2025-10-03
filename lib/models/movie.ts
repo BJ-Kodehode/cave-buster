@@ -8,7 +8,7 @@ export interface IMovie extends Document {
   description?: string;
   runtime?: number;
   cast: string[];
-  imageUrl: string;
+  imageUrl?: string;
   createdBy: string;
   createdAt: Date;
   updatedAt: Date;
@@ -62,8 +62,9 @@ const MovieSchema = new Schema<IMovie>(
     },
     imageUrl: {
       type: String,
-      required: [true, "Image URL is required"],
+      required: false,
       trim: true,
+      default: "",
     },
     createdBy: {
       type: String,

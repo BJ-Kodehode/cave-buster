@@ -34,8 +34,10 @@ export const movieSchema = z.object({
     .default([]),
   imageUrl: z
     .string()
-    .url("Must be a valid URL")
-    .min(1, "Image URL is required"),
+    .optional()
+    .refine((val) => !val || z.string().url().safeParse(val).success, {
+      message: "Must be a valid URL if provided"
+    }),
 });
 
 export const updateMovieSchema = movieSchema.partial();
