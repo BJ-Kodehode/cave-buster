@@ -30,39 +30,39 @@ export default function MovieFilters({ onFilterChange, availableGenres }: MovieF
   };
 
   return (
-    <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-6 space-y-4">
+    <div className="card rounded-xl p-6 space-y-4">
       <div className="flex items-center gap-2 mb-4">
-        <Filter className="w-5 h-5 text-blue-400" />
-        <h3 className="font-semibold text-white">Filtrer filmer</h3>
+        <Filter className="w-5 h-5 text-[var(--accent-cool)]" />
+        <h3 className="font-semibold text-[var(--foreground)]">Filtrer filmer</h3>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Search */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-300">
+          <label className="block text-sm font-medium text-[var(--foreground)]/80">
             Søk
           </label>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[var(--foreground)]/60" />
             <input
               type="text"
               placeholder="Tittel, regissør..."
               value={filters.search}
               onChange={(e) => updateFilters({ search: e.target.value })}
-              className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-colors"
+              className="w-full pl-10 pr-4 py-2 rounded-lg outline-none transition-colors"
             />
           </div>
         </div>
 
         {/* Genre */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-300">
+          <label className="block text-sm font-medium text-[var(--foreground)]/80">
             Sjanger
           </label>
           <select
             value={filters.genre}
             onChange={(e) => updateFilters({ genre: e.target.value })}
-            className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-colors"
+            className="w-full px-3 py-2 rounded-lg outline-none transition-colors"
           >
             <option value="">Alle sjangere</option>
             {availableGenres.map((genre) => (
@@ -75,14 +75,14 @@ export default function MovieFilters({ onFilterChange, availableGenres }: MovieF
 
         {/* Sort */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-300">
+          <label className="block text-sm font-medium text-[var(--foreground)]/80">
             <SortAsc className="inline w-4 h-4 mr-1" />
             Sortering
           </label>
           <select
             value={filters.sortBy}
             onChange={(e) => updateFilters({ sortBy: e.target.value })}
-            className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-colors"
+            className="w-full px-3 py-2 rounded-lg outline-none transition-colors"
           >
             <option value="newest">Nyeste først</option>
             <option value="oldest">Eldste først</option>
@@ -95,7 +95,7 @@ export default function MovieFilters({ onFilterChange, availableGenres }: MovieF
 
         {/* Year Range */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-300">
+          <label className="block text-sm font-medium text-[var(--foreground)]/80">
             År
           </label>
           <div className="flex gap-2">
@@ -108,7 +108,7 @@ export default function MovieFilters({ onFilterChange, availableGenres }: MovieF
               onChange={(e) => updateFilters({ 
                 yearRange: [parseInt(e.target.value) || 1888, filters.yearRange[1]] 
               })}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-colors"
+              className="w-full px-3 py-2 rounded-lg outline-none transition-colors"
             />
             <input
               type="number"
@@ -119,7 +119,7 @@ export default function MovieFilters({ onFilterChange, availableGenres }: MovieF
               onChange={(e) => updateFilters({ 
                 yearRange: [filters.yearRange[0], parseInt(e.target.value) || new Date().getFullYear() + 5] 
               })}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-colors"
+              className="w-full px-3 py-2 rounded-lg outline-none transition-colors"
             />
           </div>
         </div>
@@ -138,7 +138,7 @@ export default function MovieFilters({ onFilterChange, availableGenres }: MovieF
             setFilters(resetFilters);
             onFilterChange(resetFilters);
           }}
-          className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors"
+          className="px-4 py-2 text-sm text-[var(--foreground)]/60 hover:text-[var(--accent-cool)] transition-colors"
         >
           Nullstill filtre
         </button>

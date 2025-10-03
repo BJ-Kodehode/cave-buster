@@ -44,32 +44,35 @@ export default function RootLayout({
       appearance={{
         baseTheme: dark,
         variables: {
-          colorPrimary: "#3b82f6",
-          colorBackground: "#000000",
-          colorInputBackground: "#1f2937",
-          colorInputText: "#ffffff",
+          colorPrimary: "#D35400", // Ockra accent
+          colorBackground: "#3E2723", // Mørk brun
+          colorInputBackground: "rgba(62, 39, 35, 0.8)",
+          colorInputText: "#F5E1A4", // Krem tekst
+          colorText: "#F5E1A4",
+          colorTextSecondary: "rgba(245, 225, 164, 0.7)",
+          borderRadius: "12px",
         },
       }}
     >
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white min-h-screen`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
         >
-          <header className="flex justify-between items-center p-4 gap-4 h-16 bg-gray-900/50 border-b border-gray-700">
+          <header className="flex justify-between items-center p-4 gap-4 h-16 bg-[var(--background)]/95 backdrop-blur-sm border-b border-[var(--border)]">
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                🎬 Cave Buster
+              <h1 className="text-xl font-bold bg-gradient-to-r from-[var(--accent-warm)] to-[var(--accent-cool)] bg-clip-text text-transparent">
+                �‍☠️ Cave Buster
               </h1>
             </div>
             <div className="flex items-center gap-4">
               <SignedOut>
                 <SignInButton>
-                  <button className="text-gray-300 hover:text-white transition-colors font-medium">
+                  <button className="text-[var(--foreground)]/70 hover:text-[var(--accent-cool)] transition-colors font-medium">
                     Sign In
                   </button>
                 </SignInButton>
                 <SignUpButton>
-                  <button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-full font-medium text-sm h-10 px-5 transition-all">
+                  <button className="btn-primary rounded-full font-medium text-sm h-10 px-5">
                     Sign Up
                   </button>
                 </SignUpButton>
@@ -78,17 +81,21 @@ export default function RootLayout({
                 <UserButton 
                   appearance={{
                     baseTheme: dark,
+                    variables: {
+                      colorPrimary: "#D35400",
+                      colorBackground: "#3E2723",
+                    },
                     elements: {
-                      avatarBox: "w-10 h-10",
-                      userButtonPopoverCard: "bg-gray-900 border border-gray-700",
-                      userButtonPopoverActions: "bg-gray-900",
+                      avatarBox: "w-10 h-10 border-2 border-[var(--accent-warm)]",
+                      userButtonPopoverCard: "bg-[var(--background)] border border-[var(--border)]",
+                      userButtonPopoverActions: "bg-[var(--background)]",
                     }
                   }}
                 />
               </SignedIn>
             </div>
           </header>
-          <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+          <div className="min-h-screen">
             {children}
           </div>
         </body>

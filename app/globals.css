@@ -1,26 +1,145 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Cave Buster Theme - Rustikk med futuristiske aksenter */
+  --background: #3E2723; /* Mørk brun bakgrunn */
+  --foreground: #F5E1A4; /* Krem tekst */
+  --accent-warm: #D35400; /* Ockra/oransje rust aksent */
+  --accent-cool: #00FFF7; /* Cyan aksent */
+  --accent-neon: #FF00FF; /* Neon rosa aksent */
+  --card-bg: rgba(62, 39, 35, 0.8); /* Semi-transparent brun for kort */
+  --border: rgba(245, 225, 164, 0.2); /* Subtil krem border */
+  --hover-bg: rgba(211, 84, 0, 0.1); /* Hover effekt */
+  --button-primary: #D35400; /* Primær knapp farge */
+  --button-secondary: #00FFF7; /* Sekundær knapp farge */
+  --success: #4CAF50;
+  --warning: #FF9800;
+  --error: #F44336;
 }
 
 body {
-  background: var(--background);
+  background: linear-gradient(135deg, var(--background) 0%, #2E1914 100%);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+/* Global styling for a more adventurous feel */
+* {
+  transition: all 0.3s ease;
+}
+
+/* Card components */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+
+.card:hover {
+  background: var(--hover-bg);
+  border-color: var(--accent-warm);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(211, 84, 0, 0.3);
+}
+
+/* Button styling */
+.btn-primary {
+  background: var(--button-primary);
+  color: var(--foreground);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #B8441A;
+  box-shadow: 0 4px 15px rgba(211, 84, 0, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--button-secondary);
+  border: 2px solid var(--button-secondary);
+}
+
+.btn-secondary:hover {
+  background: var(--button-secondary);
+  color: var(--background);
+  box-shadow: 0 4px 15px rgba(0, 255, 247, 0.3);
+}
+
+/* Input styling */
+input, textarea, select {
+  background: rgba(62, 39, 35, 0.6);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  padding: 12px;
+  border-radius: 8px;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent-warm);
+  box-shadow: 0 0 10px rgba(211, 84, 0, 0.3);
+}
+
+/* Link styling */
+a {
+  color: var(--accent-cool);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-neon);
+  text-shadow: 0 0 8px rgba(255, 0, 255, 0.5);
+}
+
+/* Header/Navigation */
+header {
+  background: rgba(62, 39, 35, 0.95);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Movie grid styling */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 24px;
+}
+
+/* Rating stars */
+.rating-star {
+  color: #FFD700;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+/* Special effects for adventure theme */
+.adventure-glow {
+  animation: adventure-pulse 3s ease-in-out infinite;
+}
+
+@keyframes adventure-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; transform: scale(1.02); }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-warm);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cool);
 }
