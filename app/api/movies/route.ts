@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import Movie from "@/lib/models/movie";
 import { movieSchema } from "@/lib/validations/movieSchema";
@@ -49,8 +49,8 @@ export async function GET(): Promise<NextResponse<ApiResponse<MovieType[]>>> {
 // POST /api/movies - Create a new movie
 export async function POST(request: NextRequest): Promise<NextResponse<ApiResponse<MovieType>>> {
   try {
-    const user = await currentUser();
-    if (!user) {
+    const { userId } = await auth();
+    if (!userId) {
       return NextResponse.json(
         {
           success: false,
@@ -101,7 +101,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
 
     const movie = await Movie.create({
       ...validationResult.data,
-      createdBy: user.id,
+      createdBy: userId,
     });
 
     const formattedMovie: MovieType = {

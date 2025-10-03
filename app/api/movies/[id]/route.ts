@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import Movie from "@/lib/models/movie";
 import { updateMovieSchema } from "@/lib/validations/movieSchema";
@@ -65,8 +65,8 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<MovieType>>> {
   try {
-    const user = await currentUser();
-    if (!user) {
+    const { userId } = await auth();
+    if (!userId) {
       return NextResponse.json(
         {
           success: false,
@@ -106,7 +106,7 @@ export async function PUT(
     }
 
     // Check if user owns the movie
-    if (movie.createdBy !== user.id) {
+    if (movie.createdBy !== userId) {
       return NextResponse.json(
         {
           success: false,

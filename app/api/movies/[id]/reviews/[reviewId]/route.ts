@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import Review from "@/lib/models/review";
 import { updateReviewSchema } from "@/lib/validations/reviewSchema";
@@ -11,8 +11,8 @@ export async function PUT(
   { params }: { params: Promise<{ id: string; reviewId: string }> }
 ): Promise<NextResponse<ApiResponse<ReviewType>>> {
   try {
-    const user = await currentUser();
-    if (!user) {
+    const { userId } = await auth();
+    if (!userId) {
       return NextResponse.json(
         {
           success: false,
@@ -52,7 +52,7 @@ export async function PUT(
     }
 
     // Check if user owns the review
-    if (review.userId !== user.id) {
+    if (review.userId !== userId) {
       return NextResponse.json(
         {
           success: false,
@@ -113,8 +113,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string; reviewId: string }> }
 ): Promise<NextResponse<ApiResponse<null>>> {
   try {
-    const user = await currentUser();
-    if (!user) {
+    const { userId } = await auth();
+    if (!userId) {
       return NextResponse.json(
         {
           success: false,
@@ -140,7 +140,7 @@ export async function DELETE(
     }
 
     // Check if user owns the review
-    if (review.userId !== user.id) {
+    if (review.userId !== userId) {
       return NextResponse.json(
         {
           success: false,

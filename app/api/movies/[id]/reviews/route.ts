@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import Review from "@/lib/models/review";
 import Movie from "@/lib/models/movie";
@@ -65,12 +65,23 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<ReviewType>>> {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Authentication required",
+        },
+        { status: 401 }
+      );
+    }
+
     const user = await currentUser();
     if (!user) {
       return NextResponse.json(
         {
           success: false,
-          error: "Authentication required",
+          error: "User information not available",
         },
         { status: 401 }
       );
