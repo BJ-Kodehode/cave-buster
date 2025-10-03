@@ -1,0 +1,6 @@
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="60" rx="8" fill="#1f2937"/>
+  <text x="100" y="35" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#ffffff">Cave Buster</text>
+  <circle cx="20" cy="30" r="8" fill="#3b82f6"/>
+  <circle cx="180" cy="30" r="8" fill="#3b82f6"/>
+</svg>
