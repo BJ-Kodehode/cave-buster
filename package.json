@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:api": "newman run Cave-Buster-API.postman_collection.json",
+    "test:api:dev": "newman run Cave-Buster-API.postman_collection.json --env-var baseUrl=http://localhost:3000"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.33.1",
@@ -27,6 +29,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
+    "newman": "^6.2.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
