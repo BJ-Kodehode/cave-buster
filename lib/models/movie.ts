@@ -7,6 +7,8 @@ export interface IMovie extends Document {
   genre: string;
   description?: string;
   runtime?: number;
+  cast: string[];
+  imageUrl: string;
   createdBy: string;
   createdAt: Date;
   updatedAt: Date;
@@ -47,6 +49,21 @@ const MovieSchema = new Schema<IMovie>(
       type: Number,
       min: [1, "Runtime must be at least 1 minute"],
       max: [600, "Runtime cannot exceed 600 minutes"],
+    },
+    cast: {
+      type: [String],
+      required: [true, "Cast is required"],
+      validate: {
+        validator: function(v: string[]) {
+          return v.length > 0;
+        },
+        message: "Cast must have at least one actor"
+      }
+    },
+    imageUrl: {
+      type: String,
+      required: [true, "Image URL is required"],
+      trim: true,
     },
     createdBy: {
       type: String,

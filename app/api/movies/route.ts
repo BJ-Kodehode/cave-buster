@@ -14,6 +14,7 @@ export async function GET(): Promise<NextResponse<ApiResponse<MovieType[]>>> {
       .sort({ createdAt: -1 })
       .lean();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const formattedMovies: MovieType[] = movies.map((movie: any) => ({
       _id: movie._id.toString(),
       title: movie.title,
@@ -22,6 +23,8 @@ export async function GET(): Promise<NextResponse<ApiResponse<MovieType[]>>> {
       genre: movie.genre,
       description: movie.description,
       runtime: movie.runtime,
+      cast: movie.cast,
+      imageUrl: movie.imageUrl,
       createdBy: movie.createdBy,
       createdAt: movie.createdAt.toISOString(),
       updatedAt: movie.updatedAt.toISOString(),
@@ -102,6 +105,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
       genre: movie.genre,
       description: movie.description,
       runtime: movie.runtime,
+      cast: movie.cast,
+      imageUrl: movie.imageUrl,
       createdBy: movie.createdBy,
       createdAt: movie.createdAt.toISOString(),
       updatedAt: movie.updatedAt.toISOString(),

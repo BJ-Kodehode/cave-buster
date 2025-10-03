@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect, notFound } from "next/navigation";
 import connectDB from "@/lib/mongodb";
-import Movie from "@/lib/models/Movie";
+import Movie from "@/lib/models/movie";
 import EditMovieForm from "@/components/EditMovieForm";
 import type { Movie as MovieType } from "@/types";
 
@@ -42,6 +42,8 @@ export default async function EditMoviePage({
       genre: rawMovie.genre,
       description: rawMovie.description,
       runtime: rawMovie.runtime,
+      cast: rawMovie.cast,
+      imageUrl: rawMovie.imageUrl,
       createdBy: rawMovie.createdBy,
       createdAt: rawMovie.createdAt.toISOString(),
       updatedAt: rawMovie.updatedAt.toISOString(),
@@ -62,7 +64,7 @@ export default async function EditMoviePage({
         </p>
       </div>
 
-      <EditMovieForm movie={movie} />
+      <EditMovieForm movieId={id} initialData={movie} />
     </div>
   );
 }

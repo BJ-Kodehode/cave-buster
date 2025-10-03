@@ -5,8 +5,8 @@ import ReviewList from "@/components/ReviewList";
 import ReviewForm from "@/components/ReviewForm";
 import DeleteButton from "@/components/DeleteButton";
 import connectDB from "@/lib/mongodb";
-import Movie from "@/lib/models/Movie";
-import Review from "@/lib/models/Review";
+import Movie from "@/lib/models/movie";
+import Review from "@/lib/models/review";
 import type { Movie as MovieType, Review as ReviewType } from "@/types";
 import {
   Clock,
@@ -47,6 +47,8 @@ export default async function MoviePage({
       genre: rawMovie.genre,
       description: rawMovie.description,
       runtime: rawMovie.runtime,
+      cast: rawMovie.cast,
+      imageUrl: rawMovie.imageUrl,
       createdBy: rawMovie.createdBy,
       createdAt: rawMovie.createdAt.toISOString(),
       updatedAt: rawMovie.updatedAt.toISOString(),
@@ -139,7 +141,7 @@ export default async function MoviePage({
                 <Edit className="w-4 h-4" />
                 Rediger film
               </Link>
-              <DeleteButton itemId={id} itemType="movie" />
+              <DeleteButton movieId={id} movieTitle={movie.title} />
             </div>
           )}
         </div>
@@ -170,7 +172,6 @@ export default async function MoviePage({
         <ReviewList
           reviews={reviews}
           currentUserId={userId || undefined}
-          movieId={id}
         />
       </div>
     </div>

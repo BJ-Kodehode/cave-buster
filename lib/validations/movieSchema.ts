@@ -28,6 +28,13 @@ export const movieSchema = z.object({
     .min(1, "Runtime must be at least 1 minute")
     .max(600, "Runtime cannot exceed 600 minutes")
     .optional(),
+  cast: z
+    .array(z.string().trim().min(1))
+    .min(1, "At least one cast member is required"),
+  imageUrl: z
+    .string()
+    .url("Must be a valid URL")
+    .min(1, "Image URL is required"),
 });
 
 export const updateMovieSchema = movieSchema.partial();

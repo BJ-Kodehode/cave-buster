@@ -113,8 +113,8 @@ export default function HomeClient({ movies, userId }: HomeClientProps) {
           <div className="relative">
             <div className="relative w-24 h-24 mx-auto mb-6">
               <Image
-                src="/logo.png"
-                alt="Buster Block"
+                src="/logo.svg"
+                alt="Cave Buster"
                 fill
                 className="object-contain opacity-50"
               />

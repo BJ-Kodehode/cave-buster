@@ -31,6 +31,7 @@ export async function GET(
       .sort({ createdAt: -1 })
       .lean();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const formattedReviews: ReviewType[] = reviews.map((review: any) => ({
       _id: review._id.toString(),
       movieId: review.movieId.toString(),

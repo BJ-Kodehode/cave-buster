@@ -26,6 +26,7 @@ export async function GET(
       );
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const movieData: any = movie;
     const formattedMovie: MovieType = {
       _id: movieData._id.toString(),
@@ -35,6 +36,8 @@ export async function GET(
       genre: movieData.genre,
       description: movieData.description,
       runtime: movieData.runtime,
+      cast: movieData.cast,
+      imageUrl: movieData.imageUrl,
       createdBy: movieData.createdBy,
       createdAt: movieData.createdAt.toISOString(),
       updatedAt: movieData.updatedAt.toISOString(),
@@ -129,6 +132,7 @@ export async function PUT(
       );
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const movieData: any = updatedMovie;
     const formattedMovie: MovieType = {
       _id: movieData._id.toString(),
@@ -138,6 +142,8 @@ export async function PUT(
       genre: movieData.genre,
       description: movieData.description,
       runtime: movieData.runtime,
+      cast: movieData.cast,
+      imageUrl: movieData.imageUrl,
       createdBy: movieData.createdBy,
       createdAt: movieData.createdAt.toISOString(),
       updatedAt: movieData.updatedAt.toISOString(),

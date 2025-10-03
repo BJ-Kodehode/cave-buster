@@ -78,6 +78,7 @@ export async function PUT(
       );
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const reviewData: any = updatedReview;
     const formattedReview: ReviewType = {
       _id: reviewData._id.toString(),

@@ -5,8 +5,10 @@ export type Movie = {
   director: string;
   releaseYear: number;
   genre: string;
-  description?: string; // NY
-  runtime?: number; // NY
+  description?: string;
+  runtime?: number;
+  cast: string[];
+  imageUrl: string;
   createdBy: string;
   createdAt: string;
   updatedAt: string;
