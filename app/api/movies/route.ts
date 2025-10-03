@@ -49,8 +49,13 @@ export async function GET(): Promise<NextResponse<ApiResponse<MovieType[]>>> {
 // POST /api/movies - Create a new movie
 export async function POST(request: NextRequest): Promise<NextResponse<ApiResponse<MovieType>>> {
   try {
+    console.log("POST /api/movies - Starting request");
+    
     const { userId } = await auth();
+    console.log("User ID:", userId ? "Found" : "Not found");
+    
     if (!userId) {
+      console.log("Authentication failed - no userId");
       return NextResponse.json(
         {
           success: false,
@@ -60,9 +65,12 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
       );
     }
 
+    console.log("Parsing request body...");
     const body = await request.json();
+    console.log("Request body received:", JSON.stringify(body, null, 2));
     
     // Validate the request body
+    console.log("Validating with movieSchema...");
     const validationResult = movieSchema.safeParse(body);
     if (!validationResult.success) {
       console.error("Validation failed:", validationResult.error.issues);
@@ -81,15 +89,19 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
       );
     }
 
+    console.log("Connecting to database...");
     await connectDB();
+    console.log("Database connected successfully");
 
     // Check if movie with same title and director already exists
+    console.log("Checking for existing movie...");
     const existingMovie = await Movie.findOne({
       title: validationResult.data.title,
       director: validationResult.data.director,
     });
 
     if (existingMovie) {
+      console.log("Movie already exists");
       return NextResponse.json(
         {
           success: false,
@@ -99,10 +111,12 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
       );
     }
 
+    console.log("Creating new movie...");
     const movie = await Movie.create({
       ...validationResult.data,
       createdBy: userId,
     });
+    console.log("Movie created successfully:", movie._id);
 
     const formattedMovie: MovieType = {
       _id: movie._id.toString(),
@@ -119,6 +133,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
       updatedAt: movie.updatedAt.toISOString(),
     };
 
+    console.log("Returning success response");
     return NextResponse.json(
       {
         success: true,
@@ -128,10 +143,12 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
     );
   } catch (error) {
     console.error("Error creating movie:", error);
+    console.error("Error stack:", error instanceof Error ? error.stack : 'No stack trace');
     return NextResponse.json(
       {
         success: false,
         error: "Failed to create movie",
+        details: error instanceof Error ? error.message : "Unknown error",
       },
       { status: 500 }
     );

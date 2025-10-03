@@ -25,18 +25,25 @@ if (!cached) {
 }
 
 async function connectDB(): Promise<mongoose.Connection> {
+  console.log("connectDB called");
+  
   // If no MongoDB URI is provided, throw a more user-friendly error
   if (!MONGODB_URI) {
+    console.error("❌ No MONGODB_URI found in environment variables");
     throw new Error(
       "MongoDB connection not configured. Please add MONGODB_URI to your .env.local file. See SETUP.md for instructions."
     );
   }
 
+  console.log("MONGODB_URI found, checking cached connection...");
+
   if (cached!.conn) {
+    console.log("✅ Using cached MongoDB connection");
     return cached!.conn;
   }
 
   if (!cached!.promise) {
+    console.log("Creating new MongoDB connection...");
     const opts: mongoose.ConnectOptions = {
       bufferCommands: false,
     };
@@ -44,11 +51,16 @@ async function connectDB(): Promise<mongoose.Connection> {
     cached!.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
       console.log("✅ MongoDB connected successfully");
       return mongoose.connection;
+    }).catch((error) => {
+      console.error("❌ MongoDB connection failed:", error);
+      throw error;
     });
   }
 
   try {
+    console.log("Awaiting MongoDB connection...");
     cached!.conn = await cached!.promise;
+    console.log("✅ MongoDB connection established");
   } catch (e) {
     cached!.promise = null;
     console.error("❌ MongoDB connection error:", e);
