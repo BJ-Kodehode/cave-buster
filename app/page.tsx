@@ -1,8 +1,17 @@
-import { currentUser } from "@clerk/nextjs/server";
-import HomeClient from "./HomeClient";
-import type { Movie } from "@/types";
+/*
+ * File: app/page.tsx
+ * Location: Main page component (server-side) for the Cave Buster application
+ */
 
-async function getMovies(): Promise<Movie[]> {
+import { auth } from "@clerk/nextjs/server";
+import connectDB from "@/lib/mongodb";
+import Movie from "@/lib/models/movie";
+import type { Movie as MovieType } from "@/types";
+import HomeClient from "./HomeClient";
+
+export const dynamic = "force-dynamic";
+
+async function getMovies(): Promise<MovieType[]> {
   try {
     // Check if we're in development and missing env vars
     if (!process.env.MONGODB_URI || process.env.MONGODB_URI.includes('placeholder')) {
@@ -10,21 +19,23 @@ async function getMovies(): Promise<Movie[]> {
       return [];
     }
 
-    const baseUrl = process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000";
-    
-    const response = await fetch(`${baseUrl}/api/movies`, {
-      cache: "no-store",
-    });
-    
-    if (!response.ok) {
-      console.error("Failed to fetch movies:", response.statusText);
-      return [];
-    }
-    
-    const data = await response.json();
-    return data.success ? data.data : [];
+    await connectDB();
+    const rawMovies = await Movie.find({}).sort({ createdAt: -1 });
+
+    return rawMovies.map((movie) => ({
+      _id: movie._id.toString(),
+      title: movie.title,
+      director: movie.director,
+      releaseYear: movie.releaseYear,
+      genre: movie.genre,
+      description: movie.description,
+      runtime: movie.runtime,
+      cast: movie.cast,
+      imageUrl: movie.imageUrl,
+      createdBy: movie.createdBy,
+      createdAt: movie.createdAt.toISOString(),
+      updatedAt: movie.updatedAt.toISOString(),
+    }));
   } catch (error) {
     console.error("Error fetching movies:", error);
     return [];
@@ -32,7 +43,7 @@ async function getMovies(): Promise<Movie[]> {
 }
 
 export default async function Home() {
-  const user = await currentUser();
+  const { userId } = await auth();
   const movies = await getMovies();
 
   // Show setup message if no MongoDB connection
@@ -92,5 +103,16 @@ export default async function Home() {
     );
   }
 
-  return <HomeClient movies={movies} userId={user?.id || null} />;
+  return <HomeClient movies={movies} userId={userId} />;
 }
+
+/*
+ * This server component handles:
+ * - Authentication state retrieval
+ * - Database connection and error handling
+ * - Environment configuration validation
+ * - Fetching all movies from the database
+ * - Data transformation for client consumption
+ * - Setup guidance when configuration is incomplete
+ * - Rendering the client-side home component
+ */
