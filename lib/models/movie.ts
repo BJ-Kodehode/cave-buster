@@ -52,12 +52,12 @@ const MovieSchema = new Schema<IMovie>(
     },
     cast: {
       type: [String],
-      required: [true, "Cast is required"],
+      default: [],
       validate: {
         validator: function(v: string[]) {
-          return v.length > 0;
+          return v.every(actor => actor.trim().length > 0);
         },
-        message: "Cast must have at least one actor"
+        message: "All cast members must have valid names"
       }
     },
     imageUrl: {

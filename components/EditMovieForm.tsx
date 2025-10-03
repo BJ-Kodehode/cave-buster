@@ -40,9 +40,13 @@ export default function EditMovieForm({ movieId, initialData }: EditMovieFormPro
 
     try {
       const movieData = {
-        ...formData,
+        title: formData.title,
+        description: formData.description,
         releaseYear: parseInt(formData.year.toString()),
-        cast: formData.cast.split(",").map((actor: string) => actor.trim()).filter(Boolean),
+        genre: formData.genre,
+        director: formData.director,
+        cast: formData.cast ? formData.cast.split(",").map((actor: string) => actor.trim()).filter(Boolean) : [],
+        imageUrl: formData.imageUrl,
       };
 
       const response = await fetch(`/api/movies/${movieId}`, {
@@ -224,7 +228,7 @@ export default function EditMovieForm({ movieId, initialData }: EditMovieFormPro
           {/* Cast */}
           <div className="mb-6">
             <label htmlFor="cast" className="block text-sm font-medium text-gray-300 mb-2">
-              Skuespillere *
+              Skuespillere (valgfritt)
             </label>
             <input
               type="text"
@@ -233,7 +237,6 @@ export default function EditMovieForm({ movieId, initialData }: EditMovieFormPro
               value={formData.cast}
               onChange={handleInputChange}
               placeholder="Skill med komma: Actor 1, Actor 2, Actor 3"
-              required
               className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
             <p className="text-xs text-gray-500 mt-1">Skill skuespillerne med komma</p>

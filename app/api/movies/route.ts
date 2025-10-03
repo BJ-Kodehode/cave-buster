@@ -65,10 +65,17 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
     // Validate the request body
     const validationResult = movieSchema.safeParse(body);
     if (!validationResult.success) {
+      console.error("Validation failed:", validationResult.error.issues);
+      console.error("Received data:", body);
       return NextResponse.json(
         {
           success: false,
-          error: "Invalid movie data: " + validationResult.error.issues.map(i => i.message).join(", "),
+          error: "Invalid movie data",
+          details: validationResult.error.issues.map(issue => ({
+            field: issue.path.join('.'),
+            message: issue.message,
+            code: issue.code
+          }))
         },
         { status: 400 }
       );

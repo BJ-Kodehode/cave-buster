@@ -30,7 +30,8 @@ export const movieSchema = z.object({
     .optional(),
   cast: z
     .array(z.string().trim().min(1))
-    .min(1, "At least one cast member is required"),
+    .optional()
+    .default([]),
   imageUrl: z
     .string()
     .url("Must be a valid URL")
