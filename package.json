@@ -7,8 +7,13 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "type:check": "tsc --noEmit",
+    "security:audit": "npm audit",
+    "security:fix": "npm audit fix",
     "test:api": "newman run Cave-Buster-API.postman_collection.json",
-    "test:api:dev": "newman run Cave-Buster-API.postman_collection.json --env-var baseUrl=http://localhost:3000"
+    "test:api:dev": "newman run Cave-Buster-API.postman_collection.json --env-var baseUrl=http://localhost:3000",
+    "validate": "npm run lint && npm run type:check && npm run security:audit"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.33.1",
