@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Filter, SortAsc } from "lucide-react";
+import { Filter } from "lucide-react";
+import SearchBar from "./SearchBar";
 
 export interface FilterState {
   search: string;
@@ -9,8 +10,6 @@ export interface FilterState {
   sortBy: string;
   yearRange: [number, number];
 }
-
-// Interface moved up to be before the component for better organization
 
 export interface MovieFiltersProps {
   onFilterChange: (filters: FilterState) => void;
@@ -60,31 +59,23 @@ export default function MovieFilters({
         </div>
       </div>
 
-      {/* Filters and Sorting */}
+      {/* Advanced Search */}
       <div className="card rounded-xl p-6 space-y-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Filter className="w-5 h-5 text-[var(--accent-cool)]" />
-            <h3 className="font-semibold text-[var(--foreground)]">Filtre og sortering</h3>
+            <h3 className="font-semibold text-[var(--foreground)]">Søk og filtrer</h3>
           </div>
           <div className="text-sm text-[var(--foreground)]/60">
             Viser {filteredCount} av {totalMovies} filmer
           </div>
         </div>
 
-        {/* Prominent Search Bar */}
-        <div className="space-y-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[var(--foreground)]/50 pointer-events-none" />
-            <input
-              type="text"
-              placeholder="Søk etter tittel, regissør eller sjanger..."
-              value={filters.search}
-              onChange={(e) => updateFilters({ search: e.target.value })}
-              className="w-full pl-10 pr-4 py-3 text-base rounded-xl bg-[var(--background)]/50 border border-[var(--border)] focus:border-[var(--accent-cool)] outline-none transition-all placeholder:text-[var(--foreground)]/50"
-            />
-          </div>
-        </div>
+        {/* Advanced Search Bar */}
+        <SearchBar 
+          placeholder="Søk etter tittel, regissør eller sjanger..."
+          className="max-w-full"
+        />
 
         {/* Reset filters */}
         <div className="flex justify-end">
@@ -108,3 +99,4 @@ export default function MovieFilters({
     </div>
   );
 }
+
