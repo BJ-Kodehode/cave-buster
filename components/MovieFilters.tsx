@@ -81,82 +81,8 @@ export default function MovieFilters({
               placeholder="Søk etter filmer, regissører, sjangere..."
               value={filters.search}
               onChange={(e) => updateFilters({ search: e.target.value })}
-              className="w-full pl-14 pr-4 py-3 text-lg rounded-xl bg-[var(--background)]/50 border border-[var(--border)] focus:border-[var(--accent-cool)] outline-none transition-all"
+              className="w-full pl-16 pr-4 py-3 text-lg rounded-xl bg-[var(--background)]/50 border border-[var(--border)] focus:border-[var(--accent-cool)] outline-none transition-all"
             />
-          </div>
-        </div>
-
-        {/* Filter Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-          {/* Genre */}
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-[var(--foreground)]/80">
-              Sjanger
-            </label>
-            <select
-              value={filters.genre}
-              onChange={(e) => updateFilters({ genre: e.target.value })}
-              className="w-full px-3 py-2 rounded-lg bg-[var(--background)]/50 border border-[var(--border)] focus:border-[var(--accent-cool)] outline-none transition-colors"
-            >
-              <option value="">Alle sjangere</option>
-              {availableGenres.map((genre) => (
-                <option key={genre} value={genre}>
-                  {genre}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Sort */}
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-[var(--foreground)]/80">
-              <SortAsc className="inline w-4 h-4 mr-1" />
-              Sortering
-            </label>
-            <select
-              value={filters.sortBy}
-              onChange={(e) => updateFilters({ sortBy: e.target.value })}
-              className="w-full px-3 py-2 rounded-lg bg-[var(--background)]/50 border border-[var(--border)] focus:border-[var(--accent-cool)] outline-none transition-colors"
-            >
-              <option value="newest">Nyeste først</option>
-              <option value="oldest">Eldste først</option>
-              <option value="title-asc">Tittel A-Å</option>
-              <option value="title-desc">Tittel Å-A</option>
-              <option value="year-desc">År (nyeste)</option>
-              <option value="year-asc">År (eldste)</option>
-            </select>
-          </div>
-
-          {/* Year Range */}
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-[var(--foreground)]/80">
-              År
-            </label>
-            <div className="flex gap-2">
-              <input
-                type="number"
-                placeholder="Fra"
-                min="1888"
-                max={new Date().getFullYear() + 5}
-                value={filters.yearRange[0]}
-                onChange={(e) => updateFilters({ 
-                  yearRange: [parseInt(e.target.value) || 1888, filters.yearRange[1]] 
-                })}
-                className="w-full px-3 py-2 rounded-lg bg-[var(--background)]/50 border border-[var(--border)] focus:border-[var(--accent-cool)] outline-none transition-colors"
-              />
-              <input
-                type="number"
-                placeholder="Til"
-                min="1888"
-                max={new Date().getFullYear() + 5}
-                value={filters.yearRange[1]}
-                onChange={(e) => updateFilters({ 
-                  yearRange: [filters.yearRange[0], parseInt(e.target.value) || new Date().getFullYear() + 5] 
-                })}
-                className="w-full px-3 py-2 rounded-lg bg-[var(--background)]/50 border border-[var(--border)] focus:border-[var(--accent-cool)] outline-none transition-colors"
-              />
-            </div>
           </div>
         </div>
 
