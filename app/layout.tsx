@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import { 
   ClerkProvider,
@@ -60,9 +61,11 @@ export default function RootLayout({
         >
           <header className="flex justify-between items-center p-4 gap-4 h-16 bg-[var(--background)]/95 backdrop-blur-sm border-b border-[var(--border)]">
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold bg-gradient-to-r from-[var(--accent-warm)] to-[var(--accent-cool)] bg-clip-text text-transparent">
-                �‍☠️ Cave Buster
-              </h1>
+              <Link href="/" className="hover:opacity-80 transition-opacity">
+                <h1 className="text-xl font-bold bg-gradient-to-r from-[var(--accent-warm)] to-[var(--accent-cool)] bg-clip-text text-transparent">
+                  🏴‍☠️ Cave Buster
+                </h1>
+              </Link>
             </div>
             <div className="flex items-center gap-4">
               <SignedOut>
