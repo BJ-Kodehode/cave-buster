@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Filter } from "lucide-react";
 import SearchBar from "./SearchBar";
 
@@ -24,18 +23,6 @@ export default function MovieFilters({
   totalMovies, 
   filteredCount 
 }: MovieFiltersProps) {
-  const [filters, setFilters] = useState<FilterState>({
-    search: "",
-    genre: "",
-    sortBy: "newest",
-    yearRange: [1888, new Date().getFullYear() + 5],
-  });
-
-  const updateFilters = (newFilters: Partial<FilterState>) => {
-    const updatedFilters = { ...filters, ...newFilters };
-    setFilters(updatedFilters);
-    onFilterChange(updatedFilters);
-  };
 
   return (
     <div className="space-y-6">
@@ -87,7 +74,6 @@ export default function MovieFilters({
                 sortBy: "newest",
                 yearRange: [1888, new Date().getFullYear() + 5],
               };
-              setFilters(resetFilters);
               onFilterChange(resetFilters);
             }}
             className="px-4 py-2 text-sm text-[var(--foreground)]/60 hover:text-[var(--accent-cool)] transition-colors rounded-lg hover:bg-[var(--accent-cool)]/10"

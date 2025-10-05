@@ -9,6 +9,16 @@ export interface SearchItem {
   url?: string;
 }
 
+interface MovieDocument {
+  _id: unknown;
+  title: string;
+  director: string;
+  releaseYear: number;
+  genre: string;
+  description?: string;
+  cast?: string[];
+}
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const q = (searchParams.get("q") || "").toLowerCase().trim();
@@ -37,12 +47,15 @@ export async function GET(req: NextRequest) {
       ]
     }).limit(12).lean();
 
-    const results: SearchItem[] = movies.map((movie: any) => ({
-      id: movie._id.toString(),
-      title: movie.title,
-      subtitle: `${movie.director} (${movie.releaseYear}) • ${movie.genre}`,
-      url: `/movies/${movie._id}`
-    }));
+    const results: SearchItem[] = movies.map((movie) => {
+      const movieDoc = movie as unknown as MovieDocument;
+      return {
+        id: String(movieDoc._id),
+        title: movieDoc.title,
+        subtitle: `${movieDoc.director} (${movieDoc.releaseYear}) • ${movieDoc.genre}`,
+        url: `/movies/${movieDoc._id}`
+      };
+    });
 
     return NextResponse.json({ results });
   } catch (error) {

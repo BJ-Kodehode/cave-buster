@@ -175,7 +175,7 @@ export default function SearchBar({
       {open && !loading && results.length === 0 && q.length >= minChars && (
         <div className="absolute z-50 mt-1 w-full rounded-xl border border-[var(--border)] bg-[var(--background)] p-4 shadow-xl backdrop-blur-sm">
           <div className="text-sm text-[var(--foreground)]/60 text-center">
-            Ingen resultater funnet for "{q}"
+            Ingen resultater funnet for &quot;{q}&quot;
           </div>
         </div>
       )}

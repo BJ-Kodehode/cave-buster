@@ -6,7 +6,7 @@ import Image from "next/image";
 import MovieCard from "@/components/MovieCard";
 import MovieFilters, { FilterState } from "@/components/MovieFilters";
 import type { Movie } from "@/types";
-import { Film, Sparkles } from "lucide-react";
+import { Film } from "lucide-react";
 
 interface HomeClientProps {
   movies: Movie[];
