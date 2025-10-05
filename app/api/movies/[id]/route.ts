@@ -3,7 +3,22 @@ import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import Movie from "@/lib/models/movie";
 import { updateMovieSchema } from "@/lib/validations/movieSchema";
-import type { ApiResponse, Movie as MovieType } from "@/types";
+import type { ApiResponse } from "@/types";
+// Define MovieType here to include imageUrl
+type MovieType = {
+  _id: string;
+  title: string;
+  director: string;
+  releaseYear: number;
+  genre: string;
+  description: string;
+  runtime: number;
+  cast: string[];
+  imageUrl: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+};
 
 // GET /api/movies/[id] - Fetch a single movie
 export async function GET(
