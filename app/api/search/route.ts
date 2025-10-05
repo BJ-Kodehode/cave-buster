@@ -3,10 +3,11 @@ import connectDB from "@/lib/mongodb";
 import Movie from "@/lib/models/movie";
 
 export interface SearchItem {
-  id: string;
+  _id: string;
   title: string;
-  subtitle?: string;
-  url?: string;
+  director: string;
+  releaseYear: number;
+  genre: string;
 }
 
 interface MovieDocument {
@@ -50,10 +51,11 @@ export async function GET(req: NextRequest) {
     const results: SearchItem[] = movies.map((movie) => {
       const movieDoc = movie as unknown as MovieDocument;
       return {
-        id: String(movieDoc._id),
+        _id: String(movieDoc._id),
         title: movieDoc.title,
-        subtitle: `${movieDoc.director} (${movieDoc.releaseYear}) • ${movieDoc.genre}`,
-        url: `/movies/${movieDoc._id}`
+        director: movieDoc.director,
+        releaseYear: movieDoc.releaseYear,
+        genre: movieDoc.genre
       };
     });
 
