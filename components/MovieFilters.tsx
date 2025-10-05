@@ -75,13 +75,13 @@ export default function MovieFilters({
         {/* Prominent Search Bar */}
         <div className="space-y-4">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[var(--foreground)]/40 pointer-events-none" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[var(--foreground)]/50 pointer-events-none" />
             <input
               type="text"
-              placeholder="Søk etter filmer, regissører, sjangere..."
+              placeholder="Søk etter tittel, regissør eller sjanger..."
               value={filters.search}
               onChange={(e) => updateFilters({ search: e.target.value })}
-              className="w-full pl-16 pr-4 py-3 text-lg rounded-xl bg-[var(--background)]/50 border border-[var(--border)] focus:border-[var(--accent-cool)] outline-none transition-all"
+              className="w-full pl-10 pr-4 py-3 text-base rounded-xl bg-[var(--background)]/50 border border-[var(--border)] focus:border-[var(--accent-cool)] outline-none transition-all placeholder:text-[var(--foreground)]/50"
             />
           </div>
         </div>
