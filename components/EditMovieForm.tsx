@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { Save, ArrowLeft, Upload, X } from "lucide-react";
+import { Save, ArrowLeft } from "lucide-react";
 import type { Movie } from "@/types";
 
 interface EditMovieFormProps {

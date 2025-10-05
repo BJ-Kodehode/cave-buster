@@ -4,7 +4,7 @@ import connectDB from "@/lib/mongodb";
 import Movie from "@/lib/models/movie";
 import { updateMovieSchema } from "@/lib/validations/movieSchema";
 import type { ApiResponse } from "@/types";
-// Define MovieType here to include imageUrl
+// Define MovieType here without imageUrl
 type MovieType = {
   _id: string;
   title: string;
@@ -14,7 +14,6 @@ type MovieType = {
   description: string;
   runtime: number;
   cast: string[];
-  imageUrl: string;
   createdBy: string;
   createdAt: string;
   updatedAt: string;
@@ -52,7 +51,6 @@ export async function GET(
       description: movieData.description,
       runtime: movieData.runtime,
       cast: movieData.cast,
-      imageUrl: movieData.imageUrl,
       createdBy: movieData.createdBy,
       createdAt: movieData.createdAt.toISOString(),
       updatedAt: movieData.updatedAt.toISOString(),
@@ -158,7 +156,6 @@ export async function PUT(
       description: movieData.description,
       runtime: movieData.runtime,
       cast: movieData.cast,
-      imageUrl: movieData.imageUrl,
       createdBy: movieData.createdBy,
       createdAt: movieData.createdAt.toISOString(),
       updatedAt: movieData.updatedAt.toISOString(),

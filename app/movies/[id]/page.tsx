@@ -48,7 +48,6 @@ export default async function MoviePage({
       description: rawMovie.description,
       runtime: rawMovie.runtime,
       cast: rawMovie.cast,
-      imageUrl: rawMovie.imageUrl,
       createdBy: rawMovie.createdBy,
       createdAt: rawMovie.createdAt.toISOString(),
       updatedAt: rawMovie.updatedAt.toISOString(),
