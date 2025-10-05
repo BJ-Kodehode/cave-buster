@@ -31,7 +31,6 @@ async function getMovies(): Promise<MovieType[]> {
       description: movie.description,
       runtime: movie.runtime,
       cast: movie.cast,
-      imageUrl: movie.imageUrl,
       createdBy: movie.createdBy,
       createdAt: movie.createdAt.toISOString(),
       updatedAt: movie.updatedAt.toISOString(),

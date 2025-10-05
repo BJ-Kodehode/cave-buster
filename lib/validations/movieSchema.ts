@@ -32,12 +32,6 @@ export const movieSchema = z.object({
     .array(z.string().trim().min(1))
     .optional()
     .default([]),
-  imageUrl: z
-    .string()
-    .optional()
-    .refine((val) => !val || z.string().url().safeParse(val).success, {
-      message: "Must be a valid URL if provided"
-    }),
 });
 
 export const updateMovieSchema = movieSchema.partial();

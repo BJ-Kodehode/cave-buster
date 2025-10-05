@@ -8,7 +8,6 @@ export type Movie = {
   description?: string;
   runtime?: number;
   cast: string[];
-  imageUrl?: string;
   createdBy: string;
   createdAt: string;
   updatedAt: string;

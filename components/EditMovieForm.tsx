@@ -19,19 +19,13 @@ export default function EditMovieForm({ movieId, initialData }: EditMovieFormPro
     genre: initialData.genre,
     director: initialData.director,
     cast: initialData.cast.join(", "),
-    imageUrl: initialData.imageUrl,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [imagePreview, setImagePreview] = useState(initialData.imageUrl);
   const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
-    if (name === "imageUrl") {
-      setImagePreview(value);
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,7 +40,6 @@ export default function EditMovieForm({ movieId, initialData }: EditMovieFormPro
         genre: formData.genre,
         director: formData.director,
         cast: formData.cast ? formData.cast.split(",").map((actor: string) => actor.trim()).filter(Boolean) : [],
-        imageUrl: formData.imageUrl,
       };
 
       const response = await fetch(`/api/movies/${movieId}`, {
@@ -94,51 +87,6 @@ export default function EditMovieForm({ movieId, initialData }: EditMovieFormPro
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-6">
-          {/* Image Preview */}
-          {imagePreview && (
-            <div className="mb-6">
-              <div className="relative w-32 h-48 mx-auto">
-                <Image
-                  src={imagePreview}
-                  alt="Film poster forhåndsvisning"
-                  width={128}
-                  height={192}
-                  className="w-full h-full object-cover rounded-lg"
-                  onError={() => setImagePreview("")}
-                />
-                <button
-                  type="button"
-                  onClick={() => {
-                    setImagePreview("");
-                    setFormData(prev => ({ ...prev, imageUrl: "" }));
-                  }}
-                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white hover:bg-red-600 transition-colors"
-                >
-                  <X className="w-3 h-3" />
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Image URL */}
-          <div className="mb-6">
-            <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-300 mb-2">
-              Poster URL (valgfritt)
-            </label>
-            <div className="relative">
-              <Upload className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <input
-                type="url"
-                id="imageUrl"
-                name="imageUrl"
-                value={formData.imageUrl}
-                onChange={handleInputChange}
-                placeholder="https://example.com/poster.jpg"
-                className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-          </div>
-
           {/* Title */}
           <div className="mb-6">
             <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-2">

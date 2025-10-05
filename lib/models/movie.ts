@@ -8,7 +8,6 @@ export interface IMovie extends Document {
   description?: string;
   runtime?: number;
   cast: string[];
-  imageUrl?: string;
   createdBy: string;
   createdAt: Date;
   updatedAt: Date;
@@ -59,12 +58,6 @@ const MovieSchema = new Schema<IMovie>(
         },
         message: "All cast members must have valid names"
       }
-    },
-    imageUrl: {
-      type: String,
-      required: false,
-      trim: true,
-      default: "",
     },
     createdBy: {
       type: String,
