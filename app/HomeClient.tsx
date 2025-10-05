@@ -81,19 +81,9 @@ export default function HomeClient({ movies, userId }: HomeClientProps) {
   }, [movies, filters]);
 
   return (
-    <div className="space-y-10">
-      <div className="flex items-center justify-between">
-        <div className="space-y-3">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-[var(--foreground)] via-[var(--accent-cool)] to-[var(--accent-neon)] bg-clip-text text-transparent animate-in fade-in slide-in-from-bottom-3 duration-700 pb-2">
-            Filmanmeldelser
-          </h1>
-          <p className="text-[var(--foreground)]/70 text-lg flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-[var(--accent-cool)]" />
-            Utforsk og del dine meninger om filmer
-          </p>
-        </div>
-
-        {userId && (
+    <div className="space-y-8">
+      {userId && (
+        <div className="flex justify-end">
           <Link
             href="/movies/new"
             className="relative group btn-primary rounded-xl px-8 py-4 font-semibold overflow-hidden"
@@ -104,8 +94,8 @@ export default function HomeClient({ movies, userId }: HomeClientProps) {
               Legg til film
             </span>
           </Link>
-        )}
-      </div>
+        </div>
+      )}
 
       {movies.length === 0 ? (
         <div className="relative text-center py-20 card rounded-2xl overflow-hidden">
@@ -137,6 +127,8 @@ export default function HomeClient({ movies, userId }: HomeClientProps) {
           <MovieFilters
             onFilterChange={setFilters}
             availableGenres={availableGenres}
+            totalMovies={movies.length}
+            filteredCount={filteredMovies.length}
           />
 
           {filteredMovies.length === 0 ? (
@@ -146,15 +138,10 @@ export default function HomeClient({ movies, userId }: HomeClientProps) {
               </p>
             </div>
           ) : (
-            <div>
-              <p className="text-sm text-[var(--foreground)]/50 mb-4">
-                Viser {filteredMovies.length} av {movies.length} filmer
-              </p>
-              <div className="movie-grid">
-                {filteredMovies.map((movie) => (
-                  <MovieCard key={movie._id} movie={movie} />
-                ))}
-              </div>
+            <div className="movie-grid">
+              {filteredMovies.map((movie) => (
+                <MovieCard key={movie._id} movie={movie} />
+              ))}
             </div>
           )}
         </>
