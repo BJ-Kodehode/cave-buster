@@ -5,6 +5,7 @@ import Review from "@/lib/models/review";
 import Movie from "@/lib/models/movie";
 import { reviewSchema } from "@/lib/validations/reviewSchema";
 import type { ApiResponse, Review as ReviewType } from "@/types";
+import mongoose from "mongoose";
 
 // GET /api/movies/[id]/reviews - Fetch all reviews for a movie
 export async function GET(
@@ -89,14 +90,19 @@ export async function POST(
 
     const { id } = await params;
     const body = await request.json();
+    
+    console.log("Review POST request body:", body);
+    console.log("Movie ID:", id);
 
     // Validate the request body
     const validationResult = reviewSchema.safeParse(body);
     if (!validationResult.success) {
+      console.error("Validation error:", validationResult.error);
       return NextResponse.json(
         {
           success: false,
-          error: "Invalid review data: " + validationResult.error.issues.map(i => i.message).join(", "),
+          error: "Invalid review data: " + validationResult.error.issues.map(i => `${i.path.join('.')}: ${i.message}`).join(", "),
+          details: validationResult.error.issues,
         },
         { status: 400 }
       );
@@ -132,31 +138,45 @@ export async function POST(
       );
     }
 
-    const review = await Review.create({
-      movieId: id,
-      userId: user.id,
-      reviewAuthor: user.firstName + " " + (user.lastName || ""),
-      ...validationResult.data,
-    });
+    try {
+      const review = await Review.create({
+        movieId: id,
+        userId: user.id,
+        reviewAuthor: user.firstName + " " + (user.lastName || ""),
+        ...validationResult.data,
+      });
 
-    const formattedReview: ReviewType = {
-      _id: review._id.toString(),
-      movieId: review.movieId.toString(),
-      userId: review.userId,
-      reviewAuthor: review.reviewAuthor,
-      reviewText: review.reviewText,
-      rating: review.rating,
-      createdAt: review.createdAt.toISOString(),
-      updatedAt: review.updatedAt.toISOString(),
-    };
+      const formattedReview: ReviewType = {
+        _id: review._id.toString(),
+        movieId: review.movieId.toString(),
+        userId: review.userId,
+        reviewAuthor: review.reviewAuthor,
+        reviewText: review.reviewText,
+        rating: review.rating,
+        createdAt: review.createdAt.toISOString(),
+        updatedAt: review.updatedAt.toISOString(),
+      };
 
-    return NextResponse.json(
-      {
-        success: true,
-        data: formattedReview,
-      },
-      { status: 201 }
-    );
+      return NextResponse.json(
+        {
+          success: true,
+          data: formattedReview,
+        },
+        { status: 201 }
+      );
+    } catch (dbError: any) {
+      console.error("Database error creating review:", dbError);
+      if (dbError instanceof mongoose.Error.ValidationError) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Database validation error: " + Object.values(dbError.errors).map((e: any) => e.message).join(", "),
+          },
+          { status: 400 }
+        );
+      }
+      throw dbError; // Re-throw if it's not a validation error
+    }
   } catch (error) {
     console.error("Error creating review:", error);
     return NextResponse.json(

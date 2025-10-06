@@ -17,8 +17,18 @@ export default function ReviewForm({ movieId, onReviewSubmitted }: ReviewFormPro
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!rating || !reviewText.trim()) {
-      alert("Vennligst fyll ut både rating og anmeldelse");
+    if (!rating || rating < 1 || rating > 5) {
+      alert("Vennligst velg en rating mellom 1 og 5 stjerner");
+      return;
+    }
+
+    if (!reviewText.trim() || reviewText.trim().length < 10) {
+      alert("Anmeldelsen må være minst 10 tegn lang");
+      return;
+    }
+
+    if (reviewText.trim().length > 1000) {
+      alert("Anmeldelsen kan ikke være lengre enn 1000 tegn");
       return;
     }
 
@@ -31,7 +41,7 @@ export default function ReviewForm({ movieId, onReviewSubmitted }: ReviewFormPro
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          rating,
+          rating: Number(rating),
           reviewText: reviewText.trim(),
         }),
       });
@@ -41,8 +51,9 @@ export default function ReviewForm({ movieId, onReviewSubmitted }: ReviewFormPro
         setReviewText("");
         onReviewSubmitted?.();
       } else {
-        const error = await response.json();
-        alert(error.message || "Kunne ikke lagre anmeldelsen");
+        const errorData = await response.json();
+        console.error("Review submission error:", errorData);
+        alert(errorData.error || "Kunne ikke lagre anmeldelsen");
       }
     } catch (error) {
       console.error("Error submitting review:", error);
