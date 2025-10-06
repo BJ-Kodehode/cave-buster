@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import MovieCard from "@/components/MovieCard";
 import MovieFilters, { FilterState } from "@/components/MovieFilters";
 import type { Movie } from "@/types";

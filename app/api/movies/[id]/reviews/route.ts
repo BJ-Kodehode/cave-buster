@@ -164,13 +164,13 @@ export async function POST(
         },
         { status: 201 }
       );
-    } catch (dbError: any) {
+    } catch (dbError: unknown) {
       console.error("Database error creating review:", dbError);
       if (dbError instanceof mongoose.Error.ValidationError) {
         return NextResponse.json(
           {
             success: false,
-            error: "Database validation error: " + Object.values(dbError.errors).map((e: any) => e.message).join(", "),
+            error: "Database validation error: " + Object.values(dbError.errors).map((e: mongoose.Error.CastError | mongoose.Error.ValidatorError) => e.message).join(", "),
           },
           { status: 400 }
         );
