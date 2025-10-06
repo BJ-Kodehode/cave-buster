@@ -176,3 +176,67 @@ export async function PUT(
     );
   }
 }
+
+// DELETE /api/movies/[id] - Delete a movie
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse<ApiResponse<null>>> {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Unauthorized - Please sign in",
+        },
+        { status: 401 }
+      );
+    }
+
+    const { id } = await params;
+    await connectDB();
+
+    // Find the movie first to check ownership
+    const movie = await Movie.findById(id);
+
+    if (!movie) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Movie not found",
+        },
+        { status: 404 }
+      );
+    }
+
+    // Check if user owns the movie
+    if (movie.createdBy !== userId) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "You can only delete movies you created",
+        },
+        { status: 403 }
+      );
+    }
+
+    // Delete the movie
+    await Movie.findByIdAndDelete(id);
+
+    return NextResponse.json({
+      success: true,
+      data: null,
+    });
+  } catch (error) {
+    console.error("Error deleting movie:", error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Failed to delete movie",
+      },
+      { status: 500 }
+    );
+  }
+}

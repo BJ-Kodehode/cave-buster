@@ -27,8 +27,16 @@ export default function DeleteButton({ movieId, movieTitle, className = "" }: De
         router.push("/");
         router.refresh();
       } else {
-        const error = await response.json();
-        alert(error.message || "Kunne ikke slette filmen");
+        // Try to parse error response
+        let errorMessage = "Kunne ikke slette filmen";
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          // If parsing fails, use default message
+          errorMessage = `Feil ${response.status}: ${response.statusText}`;
+        }
+        alert(errorMessage);
       }
     } catch (error) {
       console.error("Error deleting movie:", error);
