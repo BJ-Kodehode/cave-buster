@@ -7,6 +7,33 @@ interface MovieCardProps {
 }
 
 export default function MovieCard({ movie }: MovieCardProps) {
+  // Funksjon for å få farge basert på sjanger
+  const getGenreColor = (genre: string) => {
+    const colors: Record<string, string> = {
+      "Action": "bg-red-500/20 text-red-200 border-red-500/30",
+      "Adventure": "bg-orange-500/20 text-orange-200 border-orange-500/30", 
+      "Animation": "bg-pink-500/20 text-pink-200 border-pink-500/30",
+      "Comedy": "bg-yellow-500/20 text-yellow-200 border-yellow-500/30",
+      "Crime": "bg-gray-500/20 text-gray-200 border-gray-500/30",
+      "Documentary": "bg-blue-500/20 text-blue-200 border-blue-500/30",
+      "Drama": "bg-purple-500/20 text-purple-200 border-purple-500/30",
+      "Family": "bg-green-500/20 text-green-200 border-green-500/30",
+      "Fantasy": "bg-violet-500/20 text-violet-200 border-violet-500/30",
+      "History": "bg-amber-500/20 text-amber-200 border-amber-500/30",
+      "Horror": "bg-red-800/20 text-red-300 border-red-800/30",
+      "Music": "bg-indigo-500/20 text-indigo-200 border-indigo-500/30",
+      "Mystery": "bg-slate-500/20 text-slate-200 border-slate-500/30",
+      "Romance": "bg-rose-500/20 text-rose-200 border-rose-500/30",
+      "Science Fiction": "bg-cyan-500/20 text-cyan-200 border-cyan-500/30",
+      "Sci-Fi": "bg-cyan-500/20 text-cyan-200 border-cyan-500/30",
+      "TV Movie": "bg-teal-500/20 text-teal-200 border-teal-500/30",
+      "Thriller": "bg-red-600/20 text-red-300 border-red-600/30",
+      "War": "bg-stone-500/20 text-stone-200 border-stone-500/30",
+      "Western": "bg-yellow-600/20 text-yellow-300 border-yellow-600/30"
+    };
+    
+    return colors[genre] || "bg-[var(--accent-warm)]/20 text-[var(--accent-warm)] border-[var(--accent-warm)]/30"; // fallback
+  };
   return (
     <Link
       href={`/movies/${movie._id}`}
@@ -29,7 +56,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
             <span>{movie.releaseYear}</span>
           </div>
           
-          <div className="px-3 py-1 bg-[var(--accent-warm)]/20 text-[var(--accent-warm)] rounded-full text-sm font-medium border border-[var(--accent-warm)]/30">
+          <div className={`px-3 py-1 rounded-full text-sm font-medium ${getGenreColor(movie.genre)}`}>
             {movie.genre}
           </div>
         </div>

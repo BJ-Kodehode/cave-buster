@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Search } from "lucide-react";
 
 interface SearchItem {
   _id: string;
@@ -24,6 +23,34 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
+
+  // Funksjon for å få farge basert på sjanger
+  const getGenreColor = (genre: string) => {
+    const colors: Record<string, string> = {
+      "Action": "bg-red-500/20 text-red-200",
+      "Adventure": "bg-orange-500/20 text-orange-200", 
+      "Animation": "bg-pink-500/20 text-pink-200",
+      "Comedy": "bg-yellow-500/20 text-yellow-200",
+      "Crime": "bg-gray-500/20 text-gray-200",
+      "Documentary": "bg-blue-500/20 text-blue-200",
+      "Drama": "bg-purple-500/20 text-purple-200",
+      "Family": "bg-green-500/20 text-green-200",
+      "Fantasy": "bg-violet-500/20 text-violet-200",
+      "History": "bg-amber-500/20 text-amber-200",
+      "Horror": "bg-red-800/20 text-red-300",
+      "Music": "bg-indigo-500/20 text-indigo-200",
+      "Mystery": "bg-slate-500/20 text-slate-200",
+      "Romance": "bg-rose-500/20 text-rose-200",
+      "Science Fiction": "bg-cyan-500/20 text-cyan-200",
+      "Sci-Fi": "bg-cyan-500/20 text-cyan-200",
+      "TV Movie": "bg-teal-500/20 text-teal-200",
+      "Thriller": "bg-red-600/20 text-red-300",
+      "War": "bg-stone-500/20 text-stone-200",
+      "Western": "bg-yellow-600/20 text-yellow-300"
+    };
+    
+    return colors[genre] || "bg-amber-500/20 text-amber-200"; // fallback
+  };
 
   // Debounced search
   useEffect(() => {
@@ -109,7 +136,7 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
   };
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full max-w-lg">
       <div className="relative">
         <input
           ref={inputRef}
@@ -124,7 +151,17 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
               setShowResults(true);
             }
           }}
-          className="w-full pl-12 pr-4 py-3 bg-gray-900/50 border border-gray-800 rounded-xl focus:ring-2 focus:ring-[#6c47ff] focus:border-transparent placeholder:text-gray-600 hover:border-gray-700"
+          className="
+            w-full
+            pl-4 pr-4 py-2
+            rounded-lg
+            bg-[#3b2a26] 
+            text-gray-200 
+            placeholder:text-neutral-400
+            focus:outline-none 
+            focus:ring-2 focus:ring-amber-500
+            transition
+          "
           aria-label="Søk etter filmer"
           aria-expanded={showResults}
           aria-haspopup="listbox"
@@ -132,7 +169,6 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
           role="combobox"
           aria-activedescendant={selectedIndex >= 0 ? `search-result-${selectedIndex}` : undefined}
         />
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" aria-hidden="true" />
       </div>
 
       {/* Search Results Dropdown */}
@@ -140,18 +176,18 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
         <div 
           ref={resultsRef}
           id="search-results"
-          className="absolute top-full left-0 right-0 mt-2 bg-gray-900 border border-gray-800 rounded-xl shadow-2xl shadow-black/50 z-50 max-h-96 overflow-y-auto"
+          className="absolute top-full left-0 right-0 mt-2 bg-[#3b2a26] border border-amber-500/20 rounded-lg shadow-2xl shadow-black/50 z-50 max-h-96 overflow-y-auto"
           role="listbox"
         >
           {isLoading && (
             <div className="flex items-center justify-center py-4">
-              <div className="w-5 h-5 border-2 border-[#6c47ff] border-t-transparent rounded-full animate-spin"></div>
-              <span className="ml-2 text-gray-400">Søker...</span>
+              <div className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+              <span className="ml-2 text-neutral-400">Søker...</span>
             </div>
           )}
 
           {!isLoading && results.length === 0 && query.trim() && (
-            <div className="px-4 py-3 text-gray-400 text-center">
+            <div className="px-4 py-3 text-neutral-400 text-center">
               Ingen resultater funnet for &ldquo;{query}&rdquo;
             </div>
           )}
@@ -163,8 +199,8 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
                   key={movie._id}
                   id={`search-result-${index}`}
                   onClick={() => handleResultClick(movie._id)}
-                  className={`w-full px-4 py-3 text-left hover:bg-gray-800/50 transition-colors border-b border-gray-800/50 last:border-b-0 ${
-                    selectedIndex === index ? "bg-gray-800/50" : ""
+                  className={`w-full px-4 py-3 text-left hover:bg-amber-500/10 transition-colors border-b border-amber-500/10 last:border-b-0 ${
+                    selectedIndex === index ? "bg-amber-500/10" : ""
                   }`}
                   role="option"
                   aria-selected={selectedIndex === index}
@@ -174,12 +210,12 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
                       <h3 className="font-semibold text-gray-200 truncate">
                         {movie.title}
                       </h3>
-                      <p className="text-sm text-gray-400 truncate">
+                      <p className="text-sm text-neutral-400 truncate">
                         {movie.director} • {movie.releaseYear}
                       </p>
                     </div>
                     <div className="ml-3 flex-shrink-0">
-                      <span className="inline-block px-2 py-1 text-xs rounded-md bg-gray-800 text-gray-300">
+                      <span className={`inline-block px-2 py-1 text-xs rounded-md ${getGenreColor(movie.genre)}`}>
                         {movie.genre}
                       </span>
                     </div>
