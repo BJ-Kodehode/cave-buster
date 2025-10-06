@@ -11,7 +11,6 @@ export default function MovieForm() {
     year: new Date().getFullYear(),
     genre: "",
     director: "",
-    cast: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
@@ -32,7 +31,7 @@ export default function MovieForm() {
         releaseYear: parseInt(formData.year.toString()),
         genre: formData.genre,
         director: formData.director,
-        cast: formData.cast ? formData.cast.split(",").map((actor: string) => actor.trim()).filter(Boolean) : [],
+        cast: [],
       };
 
       const response = await fetch("/api/movies", {
@@ -165,23 +164,6 @@ export default function MovieForm() {
               required
               className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
-          </div>
-
-          {/* Cast */}
-          <div className="mb-6">
-            <label htmlFor="cast" className="block text-sm font-medium text-gray-300 mb-2">
-              Skuespillere (valgfritt)
-            </label>
-            <input
-              type="text"
-              id="cast"
-              name="cast"
-              value={formData.cast}
-              onChange={handleInputChange}
-              placeholder="Skill med komma: Actor 1, Actor 2, Actor 3"
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-            <p className="text-xs text-gray-500 mt-1">Skill skuespillerne med komma</p>
           </div>
         </div>
 
