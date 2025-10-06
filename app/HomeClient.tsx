@@ -102,14 +102,6 @@ export default function HomeClient({ movies, userId }: HomeClientProps) {
         <div className="relative text-center py-16 sm:py-20 card rounded-2xl overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-[var(--accent-warm)]/10 via-transparent to-[var(--accent-cool)]/10 animate-pulse" />
           <div className="relative px-4">
-            <div className="relative w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-6">
-              <Image
-                src="/logo.svg"
-                alt="Cave Buster"
-                fill
-                className="object-contain opacity-50"
-              />
-            </div>
             <p className="text-[var(--foreground)]/70 text-base sm:text-lg mb-6">
               Ingen filmer lagt til ennå
             </p>
