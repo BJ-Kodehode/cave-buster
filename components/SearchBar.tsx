@@ -136,7 +136,7 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
   };
 
   return (
-    <div className="relative w-full max-w-lg">
+    <div className="relative w-full max-w-lg mx-auto">
       <div className="relative">
         <input
           ref={inputRef}
@@ -153,7 +153,8 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
           }}
           className="
             w-full
-            pl-4 pr-4 py-2
+            px-4 py-3
+            text-base
             rounded-lg
             bg-[#3b2a26] 
             text-gray-200 
@@ -161,6 +162,7 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
             focus:outline-none 
             focus:ring-2 focus:ring-amber-500
             transition
+            sm:py-2 sm:text-sm
           "
           aria-label="Søk etter filmer"
           aria-expanded={showResults}
@@ -176,7 +178,7 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
         <div 
           ref={resultsRef}
           id="search-results"
-          className="absolute top-full left-0 right-0 mt-2 bg-[#3b2a26] border border-amber-500/20 rounded-lg shadow-2xl shadow-black/50 z-50 max-h-96 overflow-y-auto"
+          className="absolute top-full left-0 right-0 mt-2 bg-[#3b2a26] border border-amber-500/20 rounded-lg shadow-2xl shadow-black/50 z-50 max-h-80 overflow-y-auto mx-2 sm:mx-0 sm:max-h-96"
           role="listbox"
         >
           {isLoading && (
@@ -199,22 +201,22 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
                   key={movie._id}
                   id={`search-result-${index}`}
                   onClick={() => handleResultClick(movie._id)}
-                  className={`w-full px-4 py-3 text-left hover:bg-amber-500/10 transition-colors border-b border-amber-500/10 last:border-b-0 ${
+                  className={`w-full px-3 py-3 text-left hover:bg-amber-500/10 transition-colors border-b border-amber-500/10 last:border-b-0 ${
                     selectedIndex === index ? "bg-amber-500/10" : ""
                   }`}
                   role="option"
                   aria-selected={selectedIndex === index}
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-gray-200 truncate">
+                      <h3 className="font-semibold text-gray-200 truncate text-sm sm:text-base">
                         {movie.title}
                       </h3>
-                      <p className="text-sm text-neutral-400 truncate">
+                      <p className="text-xs sm:text-sm text-neutral-400 truncate mt-1">
                         {movie.director} • {movie.releaseYear}
                       </p>
                     </div>
-                    <div className="ml-3 flex-shrink-0">
+                    <div className="flex-shrink-0">
                       <span className={`inline-block px-2 py-1 text-xs rounded-md ${getGenreColor(movie.genre)}`}>
                         {movie.genre}
                       </span>

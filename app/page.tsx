@@ -1,6 +1,13 @@
 /*
  * File: app/page.tsx
- * Location: Main page component (server-side) for the Cave Buster application
+ * Location: Main page       <div className="min-h-screen p-4 sm:p-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-5xl font-bold bg-gradient-to-r from-[var(--foreground)] via-[var(--accent-cool)] to-[var(--accent-neon)] bg-clip-text text-transparent mb-4">
+              🏴‍☠️ Cave Buster
+            </h1>
+            <p className="text-lg sm:text-xl text-[var(--foreground)]/70">Film anmeldelse plattform</p>
+          </div>t (server-side) for the Cave Buster application
  */
 
 import { auth } from "@clerk/nextjs/server";
@@ -57,9 +64,9 @@ export default async function Home() {
             <p className="text-xl text-[var(--foreground)]/70">Film anmeldelse plattform</p>
           </div>
           
-          <div className="card rounded-xl p-8 mb-8">
-            <h2 className="text-2xl font-bold text-[var(--accent-warm)] mb-4">⚙️ Konfigurering påkrevd</h2>
-            <p className="text-[var(--foreground)]/80 mb-6">
+          <div className="card rounded-xl p-4 sm:p-8 mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-[var(--accent-warm)] mb-4">⚙️ Konfigurering påkrevd</h2>
+            <p className="text-[var(--foreground)]/80 mb-6 text-sm sm:text-base">
               For å bruke Cave Buster trenger du å sette opp følgende:
             </p>
             
@@ -93,7 +100,7 @@ export default async function Home() {
           </div>
           
           <div className="text-center">
-            <p className="text-[var(--foreground)]/50">
+            <p className="text-[var(--foreground)]/50 text-xs sm:text-sm">
               Cave Buster - En fullstack film anmeldelse plattform bygget med Next.js, MongoDB og Clerk
             </p>
           </div>
@@ -103,11 +110,11 @@ export default async function Home() {
   }
 
   return (
-    <div className="min-h-screen p-8">
+    <div className="min-h-screen p-4 sm:p-8">
       <div className="max-w-7xl mx-auto">
-        {/* Attribution tekst øverst */}
-        <div className="text-center mb-8 p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
-          <p className="text-amber-200 text-sm">
+        {/* Attribution tekst øverst - mobile responsive */}
+        <div className="text-center mb-6 sm:mb-8 p-3 sm:p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+          <p className="text-amber-200 text-xs sm:text-sm">
             <span className="font-semibold">The Codeburglar got his code stolen.</span> Så takk til Marcus Børresen for å låne bort koden sin
           </p>
         </div>

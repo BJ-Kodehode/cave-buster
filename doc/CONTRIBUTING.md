@@ -2,9 +2,43 @@
 
 First off, thank you for considering contributing to Cave Buster! It's people like you that make Cave Buster such a great tool.
 
+Cave Buster is built upon the foundation of Marcus Børresen's [Buster Block](https://buster-block.vercel.app/) project, and we continue to evolve and enhance it with new features like advanced search functionality and color-coded genre systems.
+
 ## Code of Conduct
 
 This project and everyone participating in it is governed by our Code of Conduct. By participating, you are expected to uphold this code.
+
+## Recent Features Added
+
+Before contributing, familiarize yourself with our recent enhancements:
+
+### 🔍 Search System
+- Real-time search with debounced input
+- Multi-field search (title, director, genre, cast, description)
+- Keyboard navigation support
+- Dropdown results with color-coded genres
+
+### 🎨 Genre Color System
+- 20+ unique color schemes for different genres
+- Consistent styling across search results and movie cards
+- Visual organization for better UX
+
+### 📱 Mobile Optimization
+- Complete responsive design overhaul
+- Mobile-first approach with progressive enhancement
+- Touch-friendly interface with optimized button sizes
+- Responsive typography and layouts
+- Mobile-optimized search and filter components
+
+### 🏗️ Project Organization
+- Documentation moved to `/doc/` folder
+- Cleaner project structure
+- Updated references and imports
+
+### 🎯 UI Improvements
+- Warm color scheme with amber accents
+- Centered search interface
+- Enhanced accessibility features
 
 ## How Can I Contribute?
 

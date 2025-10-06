@@ -2,6 +2,16 @@
 
 Du ser denne meldingen fordi miljøvariablene ikke er konfigurert ennå. Følg disse trinnene for å få alt til å fungere:
 
+## ✨ Nye Funksjoner i Cave Buster
+
+- 🔍 **Sanntids søk** med fargekodede sjangre
+- ⌨️ **Tastaturnavigasjon** i søkeresultater
+- 🎨 **20+ unike farger** for forskjellige filmsjangre
+- 📱 **Fullstendig mobil-optimalisert** med responsivt design
+- 🎬 **Utvidet API** med dedikert søkeendepunkt
+- 🏗️ **Organisert dokumentasjon** i `/doc/` mappe
+- 🎯 **Touch-vennlig grensesnitt** for mobile enheter
+
 ## 📋 Trinn 1: Sett opp MongoDB
 
 ### Alternativ A: MongoDB Atlas (Anbefalt - Gratis)

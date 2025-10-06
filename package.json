@@ -1,6 +1,7 @@
 {
   "name": "cave-buster",
-  "version": "0.1.0",
+  "version": "0.3.0",
+  "description": "A full-stack movie review platform with advanced search, color-coded genres, and mobile-optimized responsive design",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
