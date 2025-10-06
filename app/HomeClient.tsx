@@ -99,7 +99,7 @@ export default function HomeClient({ movies, userId }: HomeClientProps) {
       )}
 
       {movies.length === 0 ? (
-        <div className="relative text-center py-16 sm:py-20 card rounded-2xl overflow-hidden">
+        <div className="relative text-center py-16 sm:py-20 bg-[var(--card-bg)] border border-[var(--border)] backdrop-filter backdrop-blur-lg rounded-2xl overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-[var(--accent-warm)]/10 via-transparent to-[var(--accent-cool)]/10 animate-pulse" />
           <div className="relative px-4">
             <p className="text-[var(--foreground)]/70 text-base sm:text-lg mb-6">
@@ -125,7 +125,7 @@ export default function HomeClient({ movies, userId }: HomeClientProps) {
           />
 
           {filteredMovies.length === 0 ? (
-            <div className="text-center py-12 sm:py-16 card rounded-xl px-4">
+            <div className="text-center py-12 sm:py-16 bg-[var(--card-bg)] border border-[var(--border)] backdrop-filter backdrop-blur-lg rounded-xl px-4">
               <p className="text-[var(--foreground)]/70 text-base sm:text-lg">
                 Ingen filmer matcher dine filtre
               </p>

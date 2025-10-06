@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { getGenreSearchColor } from "@/lib/genreColors";
 
 interface SearchItem {
   _id: string;
@@ -23,34 +24,6 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
-
-  // Funksjon for å få farge basert på sjanger
-  const getGenreColor = (genre: string) => {
-    const colors: Record<string, string> = {
-      "Action": "bg-red-500/20 text-red-200",
-      "Adventure": "bg-orange-500/20 text-orange-200", 
-      "Animation": "bg-pink-500/20 text-pink-200",
-      "Comedy": "bg-yellow-500/20 text-yellow-200",
-      "Crime": "bg-gray-500/20 text-gray-200",
-      "Documentary": "bg-blue-500/20 text-blue-200",
-      "Drama": "bg-purple-500/20 text-purple-200",
-      "Family": "bg-green-500/20 text-green-200",
-      "Fantasy": "bg-violet-500/20 text-violet-200",
-      "History": "bg-amber-500/20 text-amber-200",
-      "Horror": "bg-red-800/20 text-red-300",
-      "Music": "bg-indigo-500/20 text-indigo-200",
-      "Mystery": "bg-slate-500/20 text-slate-200",
-      "Romance": "bg-rose-500/20 text-rose-200",
-      "Science Fiction": "bg-cyan-500/20 text-cyan-200",
-      "Sci-Fi": "bg-cyan-500/20 text-cyan-200",
-      "TV Movie": "bg-teal-500/20 text-teal-200",
-      "Thriller": "bg-red-600/20 text-red-300",
-      "War": "bg-stone-500/20 text-stone-200",
-      "Western": "bg-yellow-600/20 text-yellow-300"
-    };
-    
-    return colors[genre] || "bg-amber-500/20 text-amber-200"; // fallback
-  };
 
   // Debounced search
   useEffect(() => {
@@ -217,7 +190,7 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
                       </p>
                     </div>
                     <div className="flex-shrink-0">
-                      <span className={`inline-block px-2 py-1 text-xs rounded-md ${getGenreColor(movie.genre)}`}>
+                      <span className={`inline-block px-2 py-1 text-xs rounded-md ${getGenreSearchColor(movie.genre)}`}>
                         {movie.genre}
                       </span>
                     </div>
