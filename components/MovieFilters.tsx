@@ -61,10 +61,12 @@ export default function MovieFilters({
   return (
     <div className="space-y-4">
       {/* Search bar */}
-      <SearchBar 
-        onSearch={(query) => updateFilters({ search: query })}
-        placeholder="Søk etter tittel, regissør eller sjanger..."
-      />
+      <div className="flex justify-center">
+        <SearchBar 
+          onSearch={(query) => updateFilters({ search: query })}
+          placeholder="Søk etter tittel, regissør eller sjanger..."
+        />
+      </div>
 
       {/* Toggle + reset */}
       <div className="flex items-center gap-3">

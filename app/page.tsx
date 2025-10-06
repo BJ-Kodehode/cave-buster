@@ -105,6 +105,13 @@ export default async function Home() {
   return (
     <div className="min-h-screen p-8">
       <div className="max-w-7xl mx-auto">
+        {/* Attribution tekst øverst */}
+        <div className="text-center mb-8 p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+          <p className="text-amber-200 text-sm">
+            <span className="font-semibold">The Codeburglar got his code stolen.</span> Så takk til Marcus Børresen for å låne bort koden sin
+          </p>
+        </div>
+        
         <HomeClient movies={movies} userId={userId} />
       </div>
     </div>
