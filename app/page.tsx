@@ -1,13 +1,6 @@
 /*
  * File: app/page.tsx
- * Location: Main page       <div className="min-h-screen p-4 sm:p-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-6 sm:mb-8">
-            <h1 className="text-3xl sm:text-5xl font-bold bg-gradient-to-r from-[var(--foreground)] via-[var(--accent-cool)] to-[var(--accent-neon)] bg-clip-text text-transparent mb-4">
-              🏴‍☠️ Cave Buster
-            </h1>
-            <p className="text-lg sm:text-xl text-[var(--foreground)]/70">Film anmeldelse plattform</p>
-          </div>t (server-side) for the Cave Buster application
+ * Location: Main page (server-side) for the Cave Buster application
  */
 
 import { auth } from "@clerk/nextjs/server";
