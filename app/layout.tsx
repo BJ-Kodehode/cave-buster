@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { type Metadata } from "next";
 import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import { 
@@ -9,7 +9,6 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
-import { dark } from "@clerk/themes";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -41,20 +40,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider
-      appearance={{
-        baseTheme: dark,
-        variables: {
-          colorPrimary: "#D35400", // Ockra accent
-          colorBackground: "#3E2723", // Mørk brun
-          colorInputBackground: "rgba(62, 39, 35, 0.8)",
-          colorInputText: "#F5E1A4", // Krem tekst
-          colorText: "#F5E1A4",
-          colorTextSecondary: "rgba(245, 225, 164, 0.7)",
-          borderRadius: "12px",
-        },
-      }}
-    >
+    <ClerkProvider>
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
@@ -84,20 +70,7 @@ export default function RootLayout({
                   </SignUpButton>
                 </SignedOut>
                 <SignedIn>
-                  <UserButton 
-                    appearance={{
-                      baseTheme: dark,
-                      variables: {
-                        colorPrimary: "#D35400",
-                        colorBackground: "#3E2723",
-                      },
-                      elements: {
-                        avatarBox: "w-10 h-10 border-2 border-[var(--accent-warm)]",
-                        userButtonPopoverCard: "bg-[var(--background)] border border-[var(--border)]",
-                        userButtonPopoverActions: "bg-[var(--background)]",
-                      }
-                    }}
-                  />
+                  <UserButton />
                 </SignedIn>
               </div>
             </div>
