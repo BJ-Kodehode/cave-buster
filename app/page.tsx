@@ -6,7 +6,9 @@
 import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import Movie from "@/lib/models/movie";
+import Review from "@/lib/models/review";
 import type { Movie as MovieType } from "@/types";
+import type { ReviewStats, OverallStats } from "@/types";
 import HomeClient from "./HomeClient";
 
 export const dynamic = "force-dynamic";
@@ -41,9 +43,85 @@ async function getMovies(): Promise<MovieType[]> {
   }
 }
 
+async function getStats(): Promise<{ perMovie: ReviewStats[]; overall: OverallStats }> {
+  try {
+    if (!process.env.MONGODB_URI || process.env.MONGODB_URI.includes('placeholder')) {
+      return {
+        perMovie: [],
+        overall: { totalMovies: 0, totalReviews: 0, avgRating: null }
+      };
+    }
+
+    await connectDB();
+
+    // Per-movie stats
+    const perMovieAgg = await Review.aggregate([
+      {
+        $group: {
+          _id: "$movieId",
+          reviewCount: { $count: {} },
+          avgRating: { $avg: "$rating" },
+        },
+      },
+    ]);
+
+    const perMovie: ReviewStats[] = perMovieAgg.map((item) => ({
+      movieId: item._id.toString(),
+      reviewCount: item.reviewCount,
+      avgRating: item.avgRating ? Math.round(item.avgRating * 10) / 10 : null,
+    }));
+
+    // Overall stats
+    const totalMovies = await Movie.countDocuments();
+    const totalReviews = await Review.countDocuments();
+    
+    const avgRatingAgg = await Review.aggregate([
+      { $group: { _id: null, avgRating: { $avg: "$rating" } } },
+    ]);
+    
+    const avgRating = avgRatingAgg.length > 0 && avgRatingAgg[0].avgRating 
+      ? Math.round(avgRatingAgg[0].avgRating * 10) / 10 
+      : null;
+
+    const overall: OverallStats = {
+      totalMovies,
+      totalReviews,
+      avgRating,
+    };
+
+    return { perMovie, overall };
+  } catch (error) {
+    console.error("Error fetching stats:", error);
+    return {
+      perMovie: [],
+      overall: { totalMovies: 0, totalReviews: 0, avgRating: null }
+    };
+  }
+}
+
 export default async function Home() {
   const { userId } = await auth();
-  const movies = await getMovies();
+  
+  let movies: MovieType[] = [];
+  let perMovie: ReviewStats[] = [];
+  let overall: OverallStats = {
+    totalMovies: 0,
+    totalReviews: 0,
+    avgRating: null,
+  };
+
+  try {
+    const [moviesData, statsData] = await Promise.all([
+      getMovies(),
+      getStats(),
+    ]);
+    
+    movies = moviesData;
+    perMovie = statsData.perMovie;
+    overall = statsData.overall;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 
   // Show setup message if no MongoDB connection
   if (!process.env.MONGODB_URI || process.env.MONGODB_URI.includes('placeholder')) {
@@ -112,7 +190,12 @@ export default async function Home() {
           </p>
         </div>
         
-        <HomeClient movies={movies} userId={userId} />
+        <HomeClient 
+          movies={movies} 
+          userId={userId} 
+          perMovie={perMovie}
+          overall={overall}
+        />
       </div>
     </div>
   );

@@ -6,6 +6,8 @@ export interface IReview extends Document {
   reviewAuthor: string;
   reviewText: string;
   rating: number;
+  helpfulBy: string[];
+  helpfulCount: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -39,6 +41,16 @@ const ReviewSchema = new Schema<IReview>(
       min: [1, "Rating must be at least 1 star"],
       max: [5, "Rating cannot exceed 5 stars"],
     },
+    helpfulBy: {
+      type: [String],
+      default: [],
+      index: true,
+    },
+    helpfulCount: {
+      type: Number,
+      default: 0,
+      index: true,
+    },
   },
   {
     timestamps: true,
@@ -48,6 +60,9 @@ const ReviewSchema = new Schema<IReview>(
 // Add indexes for better performance
 ReviewSchema.index({ movieId: 1 });
 ReviewSchema.index({ userId: 1 });
+ReviewSchema.index({ rating: -1 });
+ReviewSchema.index({ helpfulCount: -1 });
+ReviewSchema.index({ movieId: 1, userId: 1 }, { unique: true });
 ReviewSchema.index({ rating: 1 });
 ReviewSchema.index({ createdAt: -1 });
 

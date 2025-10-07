@@ -4,26 +4,84 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import MovieCard from "@/components/MovieCard";
 import MovieFilters, { FilterState } from "@/components/MovieFilters";
-import type { Movie } from "@/types";
+import type { Movie, ReviewStats, OverallStats } from "@/types";
 import { Film } from "lucide-react";
+
+interface Filters {
+  genre: string;
+  sortBy: 'newest' | 'oldest' | 'title' | 'rating' | 'director';
+  yearRange: {
+    min: string;
+    max: string;
+  };
+  minRating: string;
+  search: string;
+}
 
 interface HomeClientProps {
   movies: Movie[];
   userId: string | null;
+  perMovie: ReviewStats[];
+  overall: OverallStats;
 }
 
-export default function HomeClient({ movies, userId }: HomeClientProps) {
-  const [filters, setFilters] = useState<FilterState>({
+export default function HomeClient({ movies, userId, perMovie, overall }: HomeClientProps) {
+  const [filters, setFilters] = useState<Filters>({
     search: "",
     genre: "",
     sortBy: "newest",
-    yearRange: [1888, new Date().getFullYear() + 5],
+    yearRange: { min: "", max: "" },
+    minRating: "",
   });
+
+  const handleFilterChange = (filterState: FilterState) => {
+    // Convert sortBy values from MovieFilters format to HomeClient format
+    let sortBy: Filters['sortBy'] = "newest";
+    switch (filterState.sortBy) {
+      case "year-desc":
+      case "newest":
+        sortBy = "newest";
+        break;
+      case "year-asc":
+      case "oldest":
+        sortBy = "oldest";
+        break;
+      case "title-asc":
+      case "title-desc":
+        sortBy = "title";
+        break;
+      case "rating-desc":
+      case "rating-asc":
+        sortBy = "rating";
+        break;
+      default:
+        sortBy = "newest";
+    }
+
+    const convertedFilters: Filters = {
+      search: filterState.search || "",
+      genre: filterState.genre || "",
+      sortBy,
+      yearRange: {
+        min: filterState.yearRange ? filterState.yearRange[0].toString() : "",
+        max: filterState.yearRange ? filterState.yearRange[1].toString() : "",
+      },
+      minRating: filterState.minRating || "",
+    };
+    setFilters(convertedFilters);
+  };
 
   const availableGenres = useMemo(() => {
     const genres = new Set(movies.map((m) => m.genre));
     return Array.from(genres).sort();
   }, [movies]);
+
+  // Create stats map for quick lookup
+  const statsMap = useMemo(() => {
+    const map = new Map<string, ReviewStats>();
+    perMovie.forEach((stat) => map.set(stat.movieId, stat));
+    return map;
+  }, [perMovie]);
 
   const filteredMovies = useMemo(() => {
     let result = [...movies];
@@ -42,13 +100,25 @@ export default function HomeClient({ movies, userId }: HomeClientProps) {
       result = result.filter((movie) => movie.genre === filters.genre);
     }
 
-    result = result.filter(
-      (movie) =>
-        movie.releaseYear >= filters.yearRange[0] &&
-        movie.releaseYear <= filters.yearRange[1]
-    );
+    // Filter by year range
+    if (filters.yearRange.min || filters.yearRange.max) {
+      result = result.filter((movie) => {
+        const minYear = filters.yearRange.min ? parseInt(filters.yearRange.min) : 0;
+        const maxYear = filters.yearRange.max ? parseInt(filters.yearRange.max) : 9999;
+        return movie.releaseYear >= minYear && movie.releaseYear <= maxYear;
+      });
+    }
 
-    // Sort
+    // Filter by minimum rating
+    if (filters.minRating) {
+      const minRating = parseFloat(filters.minRating);
+      result = result.filter((movie) => {
+        const movieStats = statsMap.get(movie._id);
+        return movieStats && movieStats.avgRating && movieStats.avgRating >= minRating;
+      });
+    }
+
+    // Sort with enhanced options
     switch (filters.sortBy) {
       case "newest":
         result.sort(
@@ -62,22 +132,25 @@ export default function HomeClient({ movies, userId }: HomeClientProps) {
             new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         );
         break;
-      case "title-asc":
+      case "title":
         result.sort((a, b) => a.title.localeCompare(b.title, "no"));
         break;
-      case "title-desc":
-        result.sort((a, b) => b.title.localeCompare(a.title, "no"));
+      case "rating":
+        result.sort((a, b) => {
+          const aStats = statsMap.get(a._id);
+          const bStats = statsMap.get(b._id);
+          const aRating = aStats?.avgRating || 0;
+          const bRating = bStats?.avgRating || 0;
+          return bRating - aRating; // Highest rating first
+        });
         break;
-      case "year-desc":
-        result.sort((a, b) => b.releaseYear - a.releaseYear);
-        break;
-      case "year-asc":
-        result.sort((a, b) => a.releaseYear - b.releaseYear);
+      case "director":
+        result.sort((a, b) => a.director.localeCompare(b.director, "no"));
         break;
     }
 
     return result;
-  }, [movies, filters]);
+  }, [movies, filters, statsMap]);
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -117,7 +190,7 @@ export default function HomeClient({ movies, userId }: HomeClientProps) {
       ) : (
         <>
           <MovieFilters
-            onFilterChange={setFilters}
+            onFilterChange={handleFilterChange}
             availableGenres={availableGenres}
             totalMovies={movies.length}
             filteredCount={filteredMovies.length}
@@ -132,7 +205,11 @@ export default function HomeClient({ movies, userId }: HomeClientProps) {
           ) : (
             <div className="movie-grid">
               {filteredMovies.map((movie) => (
-                <MovieCard key={movie._id} movie={movie} />
+                <MovieCard 
+                  key={movie._id} 
+                  movie={movie} 
+                  stats={statsMap.get(movie._id)}
+                />
               ))}
             </div>
           )}

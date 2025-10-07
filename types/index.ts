@@ -24,6 +24,20 @@ export type Review = {
   rating: number;
   createdAt: string; // ISO string for client-side
   updatedAt: string; // ISO string for client-side
+  helpfulCount?: number;
+  helpfulBy?: string[];
+};
+
+export type ReviewStats = {
+  movieId: string;
+  reviewCount: number;
+  avgRating: number | null;
+};
+
+export type OverallStats = {
+  totalMovies: number;
+  totalReviews: number;
+  avgRating: number | null;
 };
 
 // API response wrapper

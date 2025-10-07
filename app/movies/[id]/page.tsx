@@ -1,8 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
-import ReviewList from "@/components/ReviewList";
-import ReviewForm from "@/components/ReviewForm";
+import MovieClient from "./MovieClient";
 import DeleteButton from "@/components/DeleteButton";
 import connectDB from "@/lib/mongodb";
 import Movie from "@/lib/models/movie";
@@ -152,9 +151,7 @@ export default async function MoviePage({
           Anmeldelser ({reviews.length})
         </h2>
 
-        {userId ? (
-          <ReviewForm movieId={id} />
-        ) : (
+        {!userId && (
           <div className="bg-gradient-to-br from-gray-900/50 via-[#6c47ff]/5 to-gray-900/50 border border-gray-800 rounded-xl p-8 text-center mb-6">
             <p className="text-gray-400 text-lg">
               <Link
@@ -168,7 +165,8 @@ export default async function MoviePage({
           </div>
         )}
 
-        <ReviewList
+        <MovieClient
+          movieId={id}
           reviews={reviews}
           currentUserId={userId || undefined}
         />

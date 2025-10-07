@@ -1,15 +1,54 @@
 "use client";
 
+import { useState } from "react";
 import { Star, User, Calendar, Edit, Trash2 } from "lucide-react";
 import type { Review } from "@/types";
 
 interface ReviewListProps {
   reviews: Review[];
   currentUserId?: string;
+  movieId: string;
   onReviewUpdate?: () => void;
 }
 
-export default function ReviewList({ reviews, currentUserId, onReviewUpdate }: ReviewListProps) {
+export default function ReviewList({ reviews, currentUserId, movieId, onReviewUpdate }: ReviewListProps) {
+  const [deletingReviews, setDeletingReviews] = useState<Set<string>>(new Set());
+
+  const handleDeleteReview = async (reviewId: string) => {
+    if (!confirm("Er du sikker på at du vil slette denne anmeldelsen?")) {
+      return;
+    }
+
+    setDeletingReviews(prev => new Set(prev).add(reviewId));
+
+    try {
+      const response = await fetch(`/api/movies/${movieId}/reviews/${reviewId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        onReviewUpdate?.();
+      } else {
+        let errorMessage = "Kunne ikke slette anmeldelsen";
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          errorMessage = `Feil ${response.status}: ${response.statusText}`;
+        }
+        alert(errorMessage);
+      }
+    } catch (error) {
+      console.error("Error deleting review:", error);
+      alert("Noe gikk galt. Prøv igjen senere.");
+    } finally {
+      setDeletingReviews(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(reviewId);
+        return newSet;
+      });
+    }
+  };
 
   if (reviews.length === 0) {
     return (
@@ -74,13 +113,9 @@ export default function ReviewList({ reviews, currentUserId, onReviewUpdate }: R
                       <Edit className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={() => {
-                        if (confirm("Er du sikker på at du vil slette denne anmeldelsen?")) {
-                          // Handle delete
-                          onReviewUpdate?.();
-                        }
-                      }}
-                      className="p-1 text-gray-400 hover:text-red-400 transition-colors"
+                      onClick={() => handleDeleteReview(review._id)}
+                      disabled={deletingReviews.has(review._id)}
+                      className="p-1 text-gray-400 hover:text-red-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Slett anmeldelse"
                     >
                       <Trash2 className="w-4 h-4" />
