@@ -15,10 +15,10 @@
     "validate": "npm run lint && npm run type:check && npm run security:audit"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.33.1",
+    "@clerk/nextjs": "^7.9.23",
     "@clerk/themes": "^2.4.23",
-    "lucide-react": "^0.560.0",
-    "mongodb": "^6.20.0",
+    "lucide-react": "^1.66.0",
+    "mongodb": "^7.8.0",
     "mongoose": "^9.0.1",
     "next": "^16.4.4",
     "react": "^19.3.1",
@@ -28,7 +28,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^0.1.0",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^24.19.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^4.0.0",
