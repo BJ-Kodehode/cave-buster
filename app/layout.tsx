@@ -5,8 +5,7 @@ import {
   ClerkProvider,
   SignInButton,
   SignUpButton,
-  SignedIn,
-  SignedOut,
+  Show,
   UserButton,
 } from "@clerk/nextjs";
 import "./globals.css";
@@ -57,7 +56,7 @@ export default function RootLayout({
               </div>
               
               <div className="flex items-center gap-4">
-                <SignedOut>
+                <Show when="signed-out">
                   <SignInButton>
                     <button className="text-[var(--foreground)]/70 hover:text-[var(--accent-cool)] transition-colors font-medium">
                       Logg inn
@@ -68,10 +67,10 @@ export default function RootLayout({
                       Registrer deg
                     </button>
                   </SignUpButton>
-                </SignedOut>
-                <SignedIn>
+                </Show>
+                <Show when="signed-in">
                   <UserButton />
-                </SignedIn>
+                </Show>
               </div>
             </div>
           </header>

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { getGenreSearchColor } from "@/lib/genreColors";
 
 interface SearchItem {
@@ -22,24 +23,11 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
 
-  // Debounced search
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (query.trim() && query.length >= 2) {
-        handleSearch(query);
-      } else {
-        setResults([]);
-        setShowResults(false);
-      }
-    }, 250);
-
-    return () => clearTimeout(timer);
-  }, [query]);
-
-  const handleSearch = async (searchQuery: string) => {
+  const handleSearch = useCallback(async (searchQuery: string) => {
     setIsLoading(true);
     try {
       const response = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
@@ -55,7 +43,21 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  // Debounced search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (query.trim() && query.length >= 2) {
+        handleSearch(query);
+      } else {
+        setResults([]);
+        setShowResults(false);
+      }
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [handleSearch, query]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -83,7 +85,7 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
         e.preventDefault();
         if (selectedIndex >= 0 && selectedIndex < results.length) {
           const selectedMovie = results[selectedIndex];
-          window.location.href = `/movies/${selectedMovie._id}`;
+          router.push(`/movies/${selectedMovie._id}`);
         }
         break;
       case "Escape":
@@ -95,7 +97,7 @@ export default function SearchBar({ onSearch, placeholder = "Søk etter tittel, 
   };
 
   const handleResultClick = (movieId: string) => {
-    window.location.href = `/movies/${movieId}`;
+    router.push(`/movies/${movieId}`);
   };
 
   const handleBlur = (e: React.FocusEvent) => {
